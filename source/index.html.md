@@ -1,10 +1,8 @@
 ---
-title: API Reference
+title: Reminders API
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
   - javascript
 
 toc_footers:
@@ -19,7 +17,7 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Reminders API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
 
 We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
@@ -27,24 +25,10 @@ This example API documentation page was created with [Slate](https://github.com/
 
 # Authentication
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "https://api.reminders.sh/"
+  -H "token: {{your_token}}"
 ```
 
 ```javascript
@@ -53,39 +37,21 @@ const kittn = require('kittn');
 let api = kittn.authorize('meowmeowmeow');
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `{{your_token}}` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Reminders uses API keys to allow access to the API. You can register yourself for a new Reminders API key at our [developer portal](http://example.com/developers).
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Reminders expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`token: {{your_token}}`
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+# Reminders
 
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+## Get All Reminders
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl "https://api.reminders.com/api/v1/reminders"
+  -H "token: {{your_token}}"
 ```
 
 ```javascript
@@ -98,60 +64,56 @@ let kittens = api.kittens.get();
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+	"data": [
+		{
+			"id": 1,
+			"user": "5978e2189950cbdaa2371710",
+			"due": "2017-08-02T21:18:00.000Z",
+			"timezone": "Europe/Amsterdam",
+			"active": true,
+			"email_to": null,
+			"email_text": null,
+			"email_html": null,
+			"email_subject": null,
+			"email_from": null,
+			"sms_to": "+31615911049",
+			"sms_body": "rico papi",
+			"created_at": "2017-08-06T13:51:37.872Z",
+			"updated_at": "2017-08-06T13:51:52.797Z"
+		}
+	],
+	"meta": {
+		"sort": "id desc",
+		"offset": 0,
+		"limit": 20
+	},
+	"jsonapi": {
+		"version": "1.0"
+	}
+}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all of your reminders.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.reminders.com/api/v1/reminders`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Default | Type | Required | Description
+--------- | ------- | ----------- | ----------- | -----------
+active | undefined | Boolean | No | If set to true it will return all active reminders, false all inactive reminders. Not set means all reminders.
+offset | 0 | Integer | No | Sets the offset for the returned results
+limit | 20 | Integer | No | Limits the amount of results returned.
+sort | 'id desc' | String | No | Specifies the sort method for the retrieved collection.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get a Specific Reminder
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl "https://api.reminders.com/api/v1/reminders/<ID>"
+  -H "token: {{your_token}}"
 ```
 
 ```javascript
@@ -165,48 +127,42 @@ let max = api.kittens.get(2);
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+	"data": {
+		"id": 13,
+		"user": "5978e2189950cbdaa2371710",
+		"due": "2017-08-01T19:40:00.000Z",
+		"timezone": "Europe/Amsterdam",
+		"active": false,
+		"email": "asd@asd.com",
+		"email_body": "hola papito lindoooo",
+		"email_subject": null,
+		"email_from": null,
+		"created_at": "2017-08-01T19:39:02.953Z"
+	},
+	"jsonapi": {
+		"version": "1.0"
+	}
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint retrieves a specific reminder.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET https://api.reminders.com/api/v1/reminders/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+ID | The ID of the Reminder to retrieve
 
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+## Create a Reminder
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
+curl "https://api.reminders.com/api/v1/reminders"
+  -X POST
+  -H "token: {{your_token}}"
 ```
 
 ```javascript
@@ -220,20 +176,124 @@ let max = api.kittens.delete(2);
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+	"data": {
+		"status": "ok"
+	},
+	"jsonapi": {
+		"version": "1.0"
+	}
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint allows you to create a new Reminder.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`POST https://api.reminders.com/api/v1/reminders`
+
+### Query Parameters
+  email_to: joi.string().email().required(),
+  email_text: joi.string().required(),
+  email_html: joi.string().required(),
+  email_subject: joi.string().required(),
+  email_from: joi.string().required()
+
+Parameter | Default | Type | Required | Description
+--------- | ------- | -----------| -----------| -----------
+due | undefined | Date | Yes | The date the reminder is due for.
+timezone | Accounts default timezone | String | No | Overrides accounts default timezone for this specific reminder.
+force | false | Boolean | No | Skips validation of due date to check if it happened in the past.
+email_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_from | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_subject | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_text | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_html | undefined | String | No | Skips validation of due date to check if it happened in the past.
+sms_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
+sms_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
+
+
+<aside class="warning">
+  You are required to either create a reminder for an email, or sms or both. if you include `email_to` but dont include on of the other `email_*` arguments the API will give you an error. Same for `sms_*` fields.
+</aside>
+
+## Update a Reminder
+
+```shell
+curl "https://api.reminders.com/api/v1/reminders/2"
+  -X DELETE
+  -H "token: {{your_token}}"
+```
+
+```javascript
+const kittn = require('kittn');
+
+let api = kittn.authorize('meowmeowmeow');
+let max = api.kittens.delete(2);
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+	"data": {
+		"status": "ok"
+	},
+	"jsonapi": {
+		"version": "1.0"
+	}
+}
+```
+
+This endpoint retrieves a specific Reminder.
+
+### HTTP Request
+
+`DELETE https://api.reminders.com/api/v1/reminders/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to delete
+ID | The ID of the Reminder to delete
+
+
+## Delete a Specific Reminder
+
+```shell
+curl "https://api.reminders.com/api/v1/reminders/2"
+  -X DELETE
+  -H "token: {{your_token}}"
+```
+
+```javascript
+const kittn = require('kittn');
+
+let api = kittn.authorize('meowmeowmeow');
+let max = api.kittens.delete(2);
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+	"data": {
+		"status": "ok"
+	},
+	"jsonapi": {
+		"version": "1.0"
+	}
+}
+```
+
+This endpoint retrieves a specific Reminder.
+
+### HTTP Request
+
+`DELETE https://api.reminders.com/api/v1/reminders/<ID>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the Reminder to delete
 
