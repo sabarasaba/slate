@@ -65,32 +65,32 @@ let kittens = api.kittens.get();
 
 ```json
 {
-	"data": [
-		{
-			"id": 1,
-			"user": "5978e2189950cbdaa2371710",
-			"due": "2017-08-02T21:18:00.000Z",
-			"timezone": "Europe/Amsterdam",
-			"active": true,
-			"email_to": null,
-			"email_text": null,
-			"email_html": null,
-			"email_subject": null,
-			"email_from": null,
-			"sms_to": "+31615911049",
-			"sms_body": "rico papi",
-			"created_at": "2017-08-06T13:51:37.872Z",
-			"updated_at": "2017-08-06T13:51:52.797Z"
-		}
-	],
-	"meta": {
-		"sort": "id desc",
-		"offset": 0,
-		"limit": 20
-	},
-	"jsonapi": {
-		"version": "1.0"
-	}
+  "data": [
+    {
+      "id": 1,
+      "user": "5978e2189950cbdaa2371710",
+      "due": "2017-08-02T21:18:00.000Z",
+      "timezone": "Europe/Amsterdam",
+      "active": true,
+      "email_to": null,
+      "email_text": null,
+      "email_html": null,
+      "email_subject": null,
+      "email_from": null,
+      "sms_to": "+31615911049",
+      "sms_body": "rico papi",
+      "created_at": "2017-08-06T13:51:37.872Z",
+      "updated_at": "2017-08-06T13:51:52.797Z"
+    }
+  ],
+  "meta": {
+    "sort": "id desc",
+    "offset": 0,
+    "limit": 20
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
 }
 ```
 
@@ -127,21 +127,21 @@ let max = api.kittens.get(2);
 
 ```json
 {
-	"data": {
-		"id": 13,
-		"user": "5978e2189950cbdaa2371710",
-		"due": "2017-08-01T19:40:00.000Z",
-		"timezone": "Europe/Amsterdam",
-		"active": false,
-		"email": "asd@asd.com",
-		"email_body": "hola papito lindoooo",
-		"email_subject": null,
-		"email_from": null,
-		"created_at": "2017-08-01T19:39:02.953Z"
-	},
-	"jsonapi": {
-		"version": "1.0"
-	}
+  "data": {
+    "id": 13,
+    "user": "5978e2189950cbdaa2371710",
+    "due": "2017-08-01T19:40:00.000Z",
+    "timezone": "Europe/Amsterdam",
+    "active": false,
+    "email": "asd@asd.com",
+    "email_body": "hola papito lindoooo",
+    "email_subject": null,
+    "email_from": null,
+    "created_at": "2017-08-01T19:39:02.953Z"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
 }
 ```
 
@@ -176,12 +176,12 @@ let max = api.kittens.delete(2);
 
 ```json
 {
-	"data": {
-		"status": "ok"
-	},
-	"jsonapi": {
-		"version": "1.0"
-	}
+  "data": {
+    "status": "ok"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
 }
 ```
 
@@ -192,11 +192,6 @@ This endpoint allows you to create a new Reminder.
 `POST https://api.reminders.com/api/v1/reminders`
 
 ### Query Parameters
-  email_to: joi.string().email().required(),
-  email_text: joi.string().required(),
-  email_html: joi.string().required(),
-  email_subject: joi.string().required(),
-  email_from: joi.string().required()
 
 Parameter | Default | Type | Required | Description
 --------- | ------- | -----------| -----------| -----------
@@ -220,7 +215,7 @@ sms_body | undefined | String | No | Skips validation of due date to check if it
 
 ```shell
 curl "https://api.reminders.com/api/v1/reminders/2"
-  -X DELETE
+  -X PUT
   -H "token: {{your_token}}"
 ```
 
@@ -235,27 +230,41 @@ let max = api.kittens.delete(2);
 
 ```json
 {
-	"data": {
-		"status": "ok"
-	},
-	"jsonapi": {
-		"version": "1.0"
-	}
+  "data": {
+    "status": "ok"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
 }
 ```
 
-This endpoint retrieves a specific Reminder.
+This endpoint Updates a specific Reminder.
 
 ### HTTP Request
 
-`DELETE https://api.reminders.com/api/v1/reminders/<ID>`
+`PUT https://api.reminders.com/api/v1/reminders/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the Reminder to delete
+ID | The ID of the Reminder to Update
 
+### Query Parameters
+
+Parameter | Default | Type | Required | Description
+--------- | ------- | -----------| -----------| -----------
+due | undefined | Date | No | The date the reminder is due for.
+timezone | Accounts default timezone | String | No | Overrides accounts default timezone for this specific reminder.
+force | false | Boolean | No | Skips validation of due date to check if it happened in the past.
+email_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_from | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_subject | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_text | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_html | undefined | String | No | Skips validation of due date to check if it happened in the past.
+sms_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
+sms_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
 
 ## Delete a Specific Reminder
 
@@ -276,12 +285,12 @@ let max = api.kittens.delete(2);
 
 ```json
 {
-	"data": {
-		"status": "ok"
-	},
-	"jsonapi": {
-		"version": "1.0"
-	}
+  "data": {
+    "status": "ok"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
 }
 ```
 
