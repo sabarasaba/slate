@@ -1,12 +1,12 @@
 ---
-title: Reminders API
+title: Reminders.company API
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='/signup'>Sign Up for a Developer Key</a>
 
 includes:
   - errors
@@ -26,14 +26,19 @@ This example API documentation page was created with [Slate](https://github.com/
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "https://api.reminders.sh/"
+curl "https://api.reminders.company/v1"
   -H "token: {{your_token}}"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
+await request({
+  uri: 'https://api.reminders.company/v1',
+  headers: {
+    token: process.env.REMINDERS_API
+  }
+})
 ```
 
 > Make sure to replace `{{your_token}}` with your API key.
@@ -49,15 +54,19 @@ Reminders expects for the API key to be included in all API requests to the serv
 ## Get All Reminders
 
 ```shell
-curl "https://api.reminders.com/api/v1/reminders"
+curl "https://api.reminders.company/v1/reminders"
   -H "token: {{your_token}}"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+const reminders = await request({
+  uri: 'https://api.reminders.company/v1/reminders',
+  headers: {
+    token: process.env.REMINDERS_API
+  }
+})
 ```
 
 > The above command returns JSON structured like this:
@@ -72,8 +81,7 @@ let kittens = api.kittens.get();
       "timezone": "Europe/Amsterdam",
       "active": true,
       "email_to": null,
-      "email_text": null,
-      "email_html": null,
+      "email_content": null,
       "email_subject": null,
       "email_from": null,
       "sms_to": "+31615911049",
@@ -97,7 +105,7 @@ This endpoint retrieves all of your reminders.
 
 ### HTTP Request
 
-`GET https://api.reminders.com/api/v1/reminders`
+`GET https://api.reminders.company/v1/reminders`
 
 ### Query Parameters
 
@@ -111,15 +119,19 @@ sort | 'id desc' | String | No | Specifies the sort method for the retrieved col
 ## Get a Specific Reminder
 
 ```shell
-curl "https://api.reminders.com/api/v1/reminders/<ID>"
+curl "https://api.reminders.company/v1/reminders/<ID>"
   -H "token: {{your_token}}"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+const reminder = await request({
+  uri: 'https://api.reminders.company/v1/reminders/<ID>',
+  headers: {
+    token: process.env.REMINDERS_API
+  }
+})
 ```
 
 > The above command returns JSON structured like this:
@@ -133,7 +145,7 @@ let max = api.kittens.get(2);
     "timezone": "Europe/Amsterdam",
     "active": false,
     "email": "asd@asd.com",
-    "email_body": "hola papito lindoooo",
+    "email_content": "hola papito lindoooo",
     "email_subject": null,
     "email_from": null,
     "created_at": "2017-08-01T19:39:02.953Z"
@@ -148,7 +160,7 @@ This endpoint retrieves a specific reminder.
 
 ### HTTP Request
 
-`GET https://api.reminders.com/api/v1/reminders/<ID>`
+`GET https://api.reminders.company/v1/reminders/<ID>`
 
 ### URL Parameters
 
@@ -159,16 +171,27 @@ ID | The ID of the Reminder to retrieve
 ## Create a Reminder
 
 ```shell
-curl "https://api.reminders.com/api/v1/reminders"
+curl "https://api.reminders.company/v1/reminders"
   -X POST
   -H "token: {{your_token}}"
+  -d '{"due":"2017-08-02 23:18","sms_to":"+3159999999", "sms_body": "hello world"}'
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+await request({
+  uri: 'https://api.reminders.company/v1/reminders',
+  method: 'POST',
+  headers: {
+    token: process.env.REMINDERS_API
+  },
+  body: {
+    due: '2017-08-02 23:18',
+    sms_to: '+3159999999',
+    sms_body: 'hello world'
+  }
+})
 ```
 
 > The above command returns JSON structured like this:
@@ -188,7 +211,7 @@ This endpoint allows you to create a new Reminder.
 
 ### HTTP Request
 
-`POST https://api.reminders.com/api/v1/reminders`
+`POST https://api.reminders.company/v1/reminders`
 
 ### Query Parameters
 
@@ -213,16 +236,25 @@ sms_body | undefined | String | No | Skips validation of due date to check if it
 ## Update a Reminder
 
 ```shell
-curl "https://api.reminders.com/api/v1/reminders/2"
+curl "https://api.reminders.company/v1/reminders/<ID>"
   -X PUT
   -H "token: {{your_token}}"
+  -d '{"sms_body": "hello world !"}'
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+await request({
+  uri: 'https://api.reminders.company/v1/reminders/<ID>',
+  method: 'PUT',
+  headers: {
+    token: process.env.REMINDERS_API
+  },
+  body: {
+    sms_body: 'hello world !'
+  }
+})
 ```
 
 > The above command returns JSON structured like this:
@@ -242,7 +274,7 @@ This endpoint Updates a specific Reminder.
 
 ### HTTP Request
 
-`PUT https://api.reminders.com/api/v1/reminders/<ID>`
+`PUT https://api.reminders.company/v1/reminders/<ID>`
 
 ### URL Parameters
 
@@ -268,16 +300,21 @@ sms_body | undefined | String | No | Skips validation of due date to check if it
 ## Delete a Specific Reminder
 
 ```shell
-curl "https://api.reminders.com/api/v1/reminders/2"
+curl "https://api.reminders.company/v1/reminders/<ID>"
   -X DELETE
   -H "token: {{your_token}}"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const request = require('request-promise')
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+await request({
+  uri: 'https://api.reminders.company/v1/reminders/<ID>',
+  method: 'DELETE',
+  headers: {
+    token: process.env.REMINDERS_API
+  }
+})
 ```
 
 > The above command returns JSON structured like this:
@@ -297,7 +334,7 @@ This endpoint retrieves a specific Reminder.
 
 ### HTTP Request
 
-`DELETE https://api.reminders.com/api/v1/reminders/<ID>`
+`DELETE https://api.reminders.company/v1/reminders/<ID>`
 
 ### URL Parameters
 
