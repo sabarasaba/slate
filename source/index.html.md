@@ -79,7 +79,7 @@ const reminders = await request({
       "timezone": "Europe/Amsterdam",
       "active": true,
       "email_to": null,
-      "email_content": null,
+      "email_body": null,
       "email_subject": null,
       "email_from": null,
       "sms_to": "+31615911049",
@@ -143,7 +143,7 @@ const reminder = await request({
     "timezone": "Europe/Amsterdam",
     "active": false,
     "email": "asd@asd.com",
-    "email_content": "hola papito lindoooo",
+    "email_body": "hola papito lindoooo",
     "email_subject": null,
     "email_from": null,
     "created_at": "2017-08-01T19:39:02.953Z"
@@ -205,7 +205,7 @@ await request({
 }
 ```
 
-This endpoint allows you to create a new Reminder.
+This endpoint allows you to create a new Reminder. Timezone format follows the naming convention of [moment.timezone](https://momentjs.com/timezone/).
 
 ### HTTP Request
 
@@ -221,8 +221,7 @@ force | false | Boolean | No | Skips validation of due date to check if it happe
 email_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
 email_from | undefined | String | No | Skips validation of due date to check if it happened in the past.
 email_subject | undefined | String | No | Skips validation of due date to check if it happened in the past.
-email_text | undefined | String | No | Skips validation of due date to check if it happened in the past.
-email_html | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
 sms_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
 sms_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
 
@@ -290,8 +289,7 @@ force | false | Boolean | No | Skips validation of due date to check if it happe
 email_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
 email_from | undefined | String | No | Skips validation of due date to check if it happened in the past.
 email_subject | undefined | String | No | Skips validation of due date to check if it happened in the past.
-email_text | undefined | String | No | Skips validation of due date to check if it happened in the past.
-email_html | undefined | String | No | Skips validation of due date to check if it happened in the past.
+email_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
 sms_to | undefined | String | No | Skips validation of due date to check if it happened in the past.
 sms_body | undefined | String | No | Skips validation of due date to check if it happened in the past.
 
